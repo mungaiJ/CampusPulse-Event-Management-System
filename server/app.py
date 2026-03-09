@@ -14,9 +14,24 @@ This file connects the whole backend together.
 
 from flask import Flask
 from flask_cors import CORS
+from flask_migrate import Migrate
+
+from config import Config
+from db import db
+
+from models import User, Event, Registration
+
 
 app = Flask(__name__)
+app.config.from_object(Config)
+
 CORS(app)
+
+# initialize db
+db.init_app(app)
+
+# initialize migrations
+migrate = Migrate(app, db)
 
 @app.route("/")
 def home():
