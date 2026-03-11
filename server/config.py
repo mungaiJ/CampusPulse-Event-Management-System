@@ -30,3 +30,6 @@ class Config:
 
     # JWT secret key
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "super-secret-key")
+
+print("DB_USER:", os.getenv("DB_USER"))
+print("DB_PASSWORD:", os.getenv("DB_PASSWORD"))
