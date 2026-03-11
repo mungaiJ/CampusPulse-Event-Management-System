@@ -26,24 +26,21 @@ from models import User, Event, Registration
 from routes.auth_routes import auth_bp
 from routes.event_routes import event_bp
 
-
 app = Flask(__name__)
 app.config.from_object(Config)
 
 CORS(app)
 
-# initialize db
+# Initialize db
 db.init_app(app)
-
 # initialize migrations
 migrate = Migrate(app, db)
-
 # Initialize JWT
 jwt = JWTManager(app)
 
-# Register API routes
-app.register_blueprint(auth_bp)
-app.register_blueprint(event_bp)
+# Register blueprints
+app.register_blueprint(auth_bp, url_prefix="/auth")
+app.register_blueprint(event_bp, url_prefix="/events")
 
 @app.route("/")
 def home():
