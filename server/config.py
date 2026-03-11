@@ -27,3 +27,6 @@ class Config:
     SQLALCHEMY_DATABASE_URI = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # JWT secret key
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "super-secret-key")

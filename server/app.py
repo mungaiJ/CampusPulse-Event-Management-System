@@ -15,11 +15,16 @@ This file connects the whole backend together.
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager
 
 from config import Config
 from db import db
 
 from models import User, Event, Registration
+
+# Import route blueprints
+from routes.auth_routes import auth_bp
+from routes.event_routes import event_bp
 
 
 app = Flask(__name__)
@@ -32,6 +37,13 @@ db.init_app(app)
 
 # initialize migrations
 migrate = Migrate(app, db)
+
+# Initialize JWT
+jwt = JWTManager(app)
+
+# Register API routes
+app.register_blueprint(auth_bp)
+app.register_blueprint(event_bp)
 
 @app.route("/")
 def home():
