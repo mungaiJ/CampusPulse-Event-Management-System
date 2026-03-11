@@ -13,10 +13,14 @@ class Event(db.Model):
     created_by = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
+    # Relationships
     creator = db.relationship("User", back_populates="events_created")
     registrations = db.relationship("Registration", back_populates="event", cascade="all, delete-orphan")
 
     def to_dict(self):
+        registrations_count = len(self.registrations)
+        remaining_capacity = self.capacity - registrations_count
+
         return {
             "id": self.id,
             "title": self.title,
@@ -26,4 +30,7 @@ class Event(db.Model):
             "capacity": self.capacity,
             "created_by": self.created_by,
             "created_at": self.created_at.isoformat() if self.created_at else None,
+            # New fields for capacity tracking
+            "registrations_count": registrations_count,
+            "remaining_capacity": remaining_capacity
         }
