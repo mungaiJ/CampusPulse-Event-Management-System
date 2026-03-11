@@ -18,3 +18,6 @@ class Config:
 
     # disables modification tracking
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+        # JWT secret key
+    JWT_SECRET_KEY = "campuspulse-secret-key"
