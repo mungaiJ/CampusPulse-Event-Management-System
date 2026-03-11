@@ -10,14 +10,14 @@ Responsibilities:
 
 Keeping settings here makes the application easier to manage and update.
 """
-
+import os
 class Config:
 
     # postgreSQL connection string
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:5212112@localhost/campuspulse"
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "postgresql://postgres:5212112@localhost/campuspulse")
 
     # disables modification tracking
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
         # JWT secret key
-    JWT_SECRET_KEY = "campuspulse-secret-key"
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "super-secret-key")
