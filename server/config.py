@@ -10,14 +10,23 @@ Responsibilities:
 
 Keeping settings here makes the application easier to manage and update.
 """
+
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 class Config:
 
-    # postgreSQL connection string
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "postgresql://postgres:5212112@localhost/campuspulse")
+    DB_USER = os.getenv("DB_USER")
+    DB_PASSWORD = os.getenv("DB_PASSWORD")
+    DB_HOST = os.getenv("DB_HOST")
+    DB_PORT = os.getenv("DB_PORT")
+    DB_NAME = os.getenv("DB_NAME")
 
-    # disables modification tracking
+    SQLALCHEMY_DATABASE_URI = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-        # JWT secret key
+    # JWT secret key
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "super-secret-key")
