@@ -38,4 +38,4 @@ def register_user(event_id):
     data = request.json
     user_id = data.get("user_id")
     result = event_service.register_user_for_event(event_id, user_id)
-    return jsonify(result), (201 if "registration_id" in result else 400)
+    return jsonify(result), (201 if "registration" in result else 400)

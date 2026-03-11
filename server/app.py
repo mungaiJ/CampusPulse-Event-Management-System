@@ -15,30 +15,30 @@ This file connects the whole backend together.
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager
 
 from config import Config
 from db import db
 
 from models import User, Event, Registration
-from routes.event_routes import event_bp   
+
+# Import route blueprints
+from routes.auth_routes import auth_bp
+from routes.event_routes import event_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
 CORS(app)
 
-# initialize db
+# Initialize db
 db.init_app(app)
-
-# initialize migrations
 migrate = Migrate(app, db)
+jwt = JWTManager(app)
 
-# register your event routes
-app.register_blueprint(event_bp)
-
-@app.route("/")
-def home():
-    return {"message": "CampusPulse API running"}
+# Register blueprints
+app.register_blueprint(auth_bp, url_prefix="/auth")
+app.register_blueprint(event_bp, url_prefix="")
 
 if __name__ == "__main__":
     app.run(debug=True)
