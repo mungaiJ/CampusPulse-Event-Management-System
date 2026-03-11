@@ -1,0 +1,36 @@
+body{
+ font-family: Arial;
+ background:#f4f6f8;
+}
+
+nav{
+ display:flex;
+ gap:20px;
+ padding:15px;
+ background:#1e3a8a;
+ color:white;
+}
+
+nav a{
+ color:white;
+ text-decoration:none;
+}
+
+button{
+ background:#2563eb;
+ color:white;
+ border:none;
+ padding:10px;
+ border-radius:5px;
+ cursor:pointer;
+}
+
+button:hover{
+ background:#1d4ed8;
+}
+
+input{
+ padding:8px;
+ margin:5px;
+ width:250px;
+}
