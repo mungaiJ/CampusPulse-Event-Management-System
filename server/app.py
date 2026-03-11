@@ -20,7 +20,7 @@ from config import Config
 from db import db
 
 from models import User, Event, Registration
-
+from routes.event_routes import event_bp   
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -32,6 +32,9 @@ db.init_app(app)
 
 # initialize migrations
 migrate = Migrate(app, db)
+
+# register your event routes
+app.register_blueprint(event_bp)
 
 @app.route("/")
 def home():
