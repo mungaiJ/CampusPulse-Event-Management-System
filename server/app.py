@@ -41,6 +41,10 @@ migrate = Migrate(app, db)
 # Initialize JWT
 jwt = JWTManager(app)
 
+# Register API routes
+app.register_blueprint(auth_bp)
+app.register_blueprint(event_bp)
+
 @app.route("/")
 def home():
     return {"message": "CampusPulse API running"}
