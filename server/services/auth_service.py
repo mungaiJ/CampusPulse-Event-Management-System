@@ -17,7 +17,7 @@ def register_user(data):
     """
 
     name = data.get("name")
-    email = data.get("email")
+    email = data.get("email").lower().strip()
     password = data.get("password")
     role = data.get("role", "student")
 
