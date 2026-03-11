@@ -33,12 +33,18 @@ CORS(app)
 
 # Initialize db
 db.init_app(app)
+# initialize migrations
 migrate = Migrate(app, db)
+# Initialize JWT
 jwt = JWTManager(app)
 
 # Register blueprints
 app.register_blueprint(auth_bp, url_prefix="/auth")
-app.register_blueprint(event_bp, url_prefix="")
+app.register_blueprint(event_bp, url_prefix="/events")
+
+@app.route("/")
+def home():
+    return {"message": "CampusPulse API running"}
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=5555, debug=True)
