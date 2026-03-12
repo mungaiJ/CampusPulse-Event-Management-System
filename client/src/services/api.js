@@ -1,42 +1,82 @@
-const BASE_URL = "http://127.0.0.1:5000";
+const BASE_URL = "http://127.0.0.1:5555";
 
-export const loginUser = async (data) => {
-
-  const res = await fetch(`${BASE_URL}/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    credentials: "include",
-    body: JSON.stringify(data)
-  });
-
-  
+// Events
+export async function getEvents() {
+  const res = await fetch(`${BASE_URL}/events`);
+  if (!res.ok) throw new Error("Failed to load events");
   return res.json();
-};
+}
 
-export const registerUser = async (data) => {
-
-  const res = await fetch(`${BASE_URL}/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  });
-
+export async function getEvent(id) {
+  const res = await fetch(`${BASE_URL}/events/${id}`);
+  if (!res.ok) throw new Error("Failed to load event");
   return res.json();
-};
+}
 
-export const registerForEvent = async (eventId) => {
+export async function registerForEvent(eventId, userId) {
+  const res = await fetch(`${BASE_URL}/events/${eventId}/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_id: userId }),
+  });
+  if (!res.ok) throw new Error("Failed to register");
+  return res.json();
+}
 
- const res = await fetch(`http://127.0.0.1:5000/events/${eventId}/register`, {
+// Auth
+export async function signupUser(data) {
+  const res = await fetch(`${BASE_URL}/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
 
-   method:"POST",
-   credentials:"include"
+export async function loginUser(data) {
+  const res = await fetch(`${BASE_URL}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
 
- });
+// User events
+export async function getMyEvents(userId) {
+  const res = await fetch(`${BASE_URL}/users/${userId}/events`);
+  if (!res.ok) throw new Error("Failed to load your events");
+  return res.json();
+}
 
- return res.json();
+// Admin
+export async function createEvent(data) {
+  const res = await fetch(`${BASE_URL}/events`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
 
-};
+export async function updateEvent(id, data) {
+  const res = await fetch(`${BASE_URL}/events/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
+
+export async function deleteEvent(id) {
+  const res = await fetch(`${BASE_URL}/events/${id}`, {
+    method: "DELETE",
+  });
+  return res.json();
+}
+
+export async function getAllEvents() {
+  const res = await fetch(`${BASE_URL}/events`);
+  if (!res.ok) throw new Error("Failed to load events");
+  return res.json();
+}

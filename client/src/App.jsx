@@ -1,30 +1,39 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import EventsPage from "./pages/EventsPage";
-import EventDetailsPage from "./pages/EventDetailsPage";
 import MyEventsPage from "./pages/MyEventsPage";
 import AdminDashboard from "./pages/AdminDashboard";
-import "./App.css"
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import EventDetailsPage from "./pages/EventDetailsPage";   // ✅ import details page
+import ProtectedRoute from "./components/ProtectedRoute";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <BrowserRouter>
-
+    <Router>
+      {/* ✅ Navbar always visible */}
       <Navbar />
 
       <Routes>
         <Route path="/" element={<EventsPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/events/:id" element={<EventDetailsPage />} />
         <Route path="/my-events" element={<MyEventsPage />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-      </Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
 
-    </BrowserRouter>
+        {/* ✅ Event details route */}
+        <Route path="/events/:id" element={<EventDetailsPage />} />
+
+        {/* ✅ Admin route protected */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute requireAdmin={true}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 
