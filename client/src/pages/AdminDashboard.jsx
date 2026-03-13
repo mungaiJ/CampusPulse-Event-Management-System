@@ -3,7 +3,13 @@ import { getAllEvents, createEvent, updateEvent, deleteEvent } from "../services
 
 export default function AdminDashboard() {
   const [events, setEvents] = useState([]);
-  const [form, setForm] = useState({ title: "", description: "", date: "", capacity: "" });
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    event_date: "",
+    capacity: "",
+    location: ""
+  });
   const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
@@ -21,10 +27,16 @@ export default function AdminDashboard() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (editingId) await updateEvent(editingId, form);
-    else await createEvent(form);
+    const user = JSON.parse(localStorage.getItem("user")); // ✅ logged-in user
+    const payload = { ...form, created_by: user?.id };
 
-    setForm({ title: "", description: "", date: "", capacity: "" });
+    if (editingId) {
+      await updateEvent(editingId, payload);
+    } else {
+      await createEvent(payload);
+    }
+
+    setForm({ title: "", description: "", event_date: "", capacity: "", location: "" });
     setEditingId(null);
     loadEvents();
   };
@@ -33,8 +45,9 @@ export default function AdminDashboard() {
     setForm({
       title: event.title,
       description: event.description,
-      date: event.date,
+      event_date: event.event_date ? event.event_date.slice(0, 16) : "", // ✅ format for datetime-local
       capacity: event.capacity,
+      location: event.location
     });
     setEditingId(event.id);
   };
@@ -81,11 +94,11 @@ export default function AdminDashboard() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-200 mb-1">Date</label>
+              <label className="block text-sm font-medium text-gray-200 mb-1">Date & Time</label>
               <input
-                type="date"
-                name="date"
-                value={form.date}
+                type="datetime-local"
+                name="event_date"
+                value={form.event_date}
                 onChange={handleChange}
                 className="w-full p-3 rounded-lg border border-gray-600 bg-gray-900 focus:ring-2 focus:ring-cyan-400 focus:outline-none"
               />
@@ -101,6 +114,17 @@ export default function AdminDashboard() {
                 className="w-full p-3 rounded-lg border border-gray-600 bg-gray-900 focus:ring-2 focus:ring-cyan-400 focus:outline-none"
               />
             </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-200 mb-1">Location</label>
+            <input
+              name="location"
+              placeholder="Event Location"
+              value={form.location}
+              onChange={handleChange}
+              className="w-full p-3 rounded-lg border border-gray-600 bg-gray-900 focus:ring-2 focus:ring-cyan-400 focus:outline-none"
+            />
           </div>
 
           <button
@@ -123,8 +147,9 @@ export default function AdminDashboard() {
             >
               <h3 className="text-xl font-bold text-blue-400">{event.title}</h3>
               <p className="text-gray-300 mb-2">{event.description}</p>
-              <p className="text-sm text-gray-400">📅 {event.date}</p>
+              <p className="text-sm text-gray-400">📅 {new Date(event.event_date).toLocaleString()}</p>
               <p className="text-sm text-gray-400">👥 Capacity: {event.capacity}</p>
+              {/* 🚫 Location hidden here, only shown in EventDetailsPage */}
               <div className="flex justify-end space-x-4 mt-4">
                 <button
                   onClick={() => handleEdit(event)}

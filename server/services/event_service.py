@@ -5,12 +5,21 @@ from datetime import datetime
 
 def create_event(data, creator_id):
     try:
+        # Parse event_date safely
+        event_date_str = data["event_date"]
+        try:
+            # Try parsing datetime-local format (YYYY-MM-DDTHH:MM)
+            event_date = datetime.strptime(event_date_str, "%Y-%m-%dT%H:%M")
+        except ValueError:
+            # Fallback to full timestamp format (YYYY-MM-DD HH:MM:SS)
+            event_date = datetime.strptime(event_date_str, "%Y-%m-%d %H:%M:%S")
+
         event = Event(
             title=data["title"],
             description=data.get("description"),
             location=data["location"],
-            event_date=datetime.strptime(data["event_date"], "%Y-%m-%d %H:%M:%S"),
-            capacity=data["capacity"],
+            event_date=event_date,
+            capacity=int(data["capacity"]),
             created_by=creator_id
         )
         db.session.add(event)
@@ -36,9 +45,14 @@ def update_event(event_id, data):
         event.title = data.get("title", event.title)
         event.description = data.get("description", event.description)
         event.location = data.get("location", event.location)
+
         if data.get("event_date"):
-            event.event_date = datetime.strptime(data["event_date"], "%Y-%m-%d %H:%M:%S")
-        event.capacity = data.get("capacity", event.capacity)
+            try:
+                event.event_date = datetime.strptime(data["event_date"], "%Y-%m-%dT%H:%M")
+            except ValueError:
+                event.event_date = datetime.strptime(data["event_date"], "%Y-%m-%d %H:%M:%S")
+
+        event.capacity = int(data.get("capacity", event.capacity))
         db.session.commit()
         return {"message": "Event updated successfully", "event": event.to_dict()}
     except Exception as e:
