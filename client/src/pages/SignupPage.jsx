@@ -10,17 +10,20 @@ export default function SignupPage() {
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = await signupUser(form);
+  e.preventDefault();
+  const data = await signupUser(form);
 
-    if (data.user) {
-      localStorage.setItem("user", JSON.stringify(data.user));
-      if (data.token) localStorage.setItem("token", data.token);
-      navigate(data.user.role === "admin" ? "/admin" : "/my-events");
-    } else {
-      setMessage(data.error || data.message || "Signup failed.");
-    }
-  };
+  if (data.user) {
+    localStorage.setItem("user", JSON.stringify(data.user));
+    if (data.token) localStorage.setItem("token", data.token);
+    // ✅ clear form after success
+    setForm({ name: "", email: "", password: "", role: "student" });
+    navigate(data.user.role === "admin" ? "/admin" : "/my-events");
+  } else {
+    setMessage(data.error || data.message || "Signup failed.");
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
