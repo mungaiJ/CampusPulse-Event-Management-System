@@ -8,11 +8,11 @@ export default function HeroBanner() {
       <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 rounded-full blur-3xl opacity-30 animate-pulse"></div>
 
       <h2 className="text-5xl md:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">
-        Discover Campus Events
+        Meet, Mingle, Make Memories
       </h2>
 
       <p className="text-lg md:text-xl mb-8 text-gray-300 max-w-2xl mx-auto">
-        Find and register for the best events happening on campus. Connect, engage, and explore!
+        Your guide to the best campus events. Meet friends, join activities, and experience campus life to the fullest.
       </p>
 
       <div className="flex justify-center space-x-6">

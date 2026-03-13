@@ -23,6 +23,16 @@ export async function registerForEvent(eventId, userId) {
   return res.json();
 }
 
+export async function unregisterFromEvent(eventId, userId) {
+  const res = await fetch(`${BASE_URL}/events/${eventId}/register`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_id: userId }),
+  });
+  if (!res.ok) throw new Error("Failed to unregister");
+  return res.json();
+}
+
 // Auth
 export async function signupUser(data) {
   const res = await fetch(`${BASE_URL}/auth/register`, {

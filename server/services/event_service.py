@@ -5,13 +5,10 @@ from datetime import datetime
 
 def create_event(data, creator_id):
     try:
-        # Parse event_date safely
         event_date_str = data["event_date"]
         try:
-            # Try parsing datetime-local format (YYYY-MM-DDTHH:MM)
             event_date = datetime.strptime(event_date_str, "%Y-%m-%dT%H:%M")
         except ValueError:
-            # Fallback to full timestamp format (YYYY-MM-DD HH:MM:SS)
             event_date = datetime.strptime(event_date_str, "%Y-%m-%d %H:%M:%S")
 
         event = Event(
@@ -85,6 +82,18 @@ def register_user_for_event(event_id, user_id):
         db.session.add(registration)
         db.session.commit()
         return {"message": "User registered successfully", "registration_id": registration.id}
+    except Exception as e:
+        db.session.rollback()
+        return {"error": str(e)}
+
+def unregister_user_from_event(event_id, user_id):
+    registration = Registration.query.filter_by(user_id=user_id, event_id=event_id).first()
+    if not registration:
+        return {"error": "User not registered for this event"}
+    try:
+        db.session.delete(registration)
+        db.session.commit()
+        return {"message": "User unregistered successfully"}
     except Exception as e:
         db.session.rollback()
         return {"error": str(e)}
