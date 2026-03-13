@@ -31,7 +31,7 @@ def create_app():
     app.config.from_object(Config)
 
     # Enable CORS
-    CORS(app)
+    CORS(app, origins=["https://univibez.netlify.app/"])
 
     # Initialize db, migrations, JWT
     db.init_app(app)
