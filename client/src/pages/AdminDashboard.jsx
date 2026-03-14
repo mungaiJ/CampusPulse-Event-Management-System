@@ -8,7 +8,8 @@ export default function AdminDashboard() {
     description: "",
     event_date: "",
     capacity: "",
-    location: ""
+    location: "",
+    type: ""
   });
   const [editingId, setEditingId] = useState(null);
 
@@ -27,7 +28,7 @@ export default function AdminDashboard() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = JSON.parse(localStorage.getItem("user")); // ✅ logged-in user
+    const user = JSON.parse(localStorage.getItem("user"));
     const payload = { ...form, created_by: user?.id };
 
     if (editingId) {
@@ -36,7 +37,7 @@ export default function AdminDashboard() {
       await createEvent(payload);
     }
 
-    setForm({ title: "", description: "", event_date: "", capacity: "", location: "" });
+    setForm({ title: "", description: "", event_date: "", capacity: "", location: "", type: "" });
     setEditingId(null);
     loadEvents();
   };
@@ -45,9 +46,10 @@ export default function AdminDashboard() {
     setForm({
       title: event.title,
       description: event.description,
-      event_date: event.event_date ? event.event_date.slice(0, 16) : "", // ✅ format for datetime-local
+      event_date: event.event_date ? event.event_date.slice(0, 16) : "",
       capacity: event.capacity,
-      location: event.location
+      location: event.location,
+      type: event.type || ""
     });
     setEditingId(event.id);
   };
@@ -58,7 +60,12 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-white px-6 py-12">
+    <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-white px-6 py-12 overflow-hidden">
+      
+      {/* Subtle background glows */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-purple-600 opacity-20 blur-3xl rounded-full animate-pulse pointer-events-none"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-500 opacity-20 blur-3xl rounded-full animate-pulse pointer-events-none"></div>
+
       <h1 className="text-4xl font-bold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500">
         Admin Dashboard
       </h1>
@@ -127,6 +134,23 @@ export default function AdminDashboard() {
             />
           </div>
 
+          <div>
+            <label className="block text-sm font-medium text-gray-200 mb-1">Event Type</label>
+            <select
+              name="type"
+              value={form.type}
+              onChange={handleChange}
+              className="w-full p-3 rounded-lg border border-gray-600 bg-gray-900 focus:ring-2 focus:ring-cyan-400 focus:outline-none"
+            >
+              <option value="">Select Event Type</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Seminar">Seminar</option>
+              <option value="Conference">Conference</option>
+              <option value="Meetup">Meetup</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
           <button
             type="submit"
             className="w-full py-3 rounded-lg font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-blue-500 hover:to-cyan-400 transition transform hover:scale-105 shadow-lg"
@@ -143,13 +167,13 @@ export default function AdminDashboard() {
           {events.map((event) => (
             <div
               key={event.id}
-              className="bg-gray-800 bg-opacity-70 backdrop-blur-md shadow-2xl rounded-xl p-6 border border-cyan-400 hover:shadow-cyan-400/50 transition transform hover:-translate-y-1"
+              className="bg-gray-800 bg-opacity-70 backdrop-blur-md shadow-2xl rounded-xl p-6 border border-cyan-400 hover:shadow-cyan-500/40 transition transform hover:-translate-y-1"
             >
               <h3 className="text-xl font-bold text-blue-400">{event.title}</h3>
-              <p className="text-gray-300 mb-2">{event.description}</p>
+              <p className="text-gray-300 mb-1">{event.description}</p>
               <p className="text-sm text-gray-400">📅 {new Date(event.event_date).toLocaleString()}</p>
               <p className="text-sm text-gray-400">👥 Capacity: {event.capacity}</p>
-              {/* 🚫 Location hidden here, only shown in EventDetailsPage */}
+              <p className="text-sm text-gray-400">🏷️ Type: {event.type}</p>
               <div className="flex justify-end space-x-4 mt-4">
                 <button
                   onClick={() => handleEdit(event)}
