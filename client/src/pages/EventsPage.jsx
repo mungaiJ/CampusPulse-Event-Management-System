@@ -25,7 +25,7 @@ export default function EventsPage() {
     loadEvents();
   }, []);
 
-  // ✅ Filter events whenever search changes
+  // Filter events whenever search changes
   useEffect(() => {
     const lowerSearch = search.toLowerCase();
     const filtered = events.filter((event) =>
@@ -38,10 +38,8 @@ export default function EventsPage() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      {/* Hero Banner */}
       <HeroBanner />
 
-      {/* Events Section */}
       <section className="py-16 max-w-7xl mx-auto px-6">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">
@@ -52,7 +50,6 @@ export default function EventsPage() {
           </p>
         </div>
 
-        {/* ✅ Search Bar */}
         <div className="max-w-md mx-auto mb-8">
           <input
             type="text"
@@ -63,7 +60,6 @@ export default function EventsPage() {
           />
         </div>
 
-        {/* Error / Retry */}
         {error && (
           <div className="text-center mb-8">
             <p className="text-red-500 font-medium">{error}</p>
@@ -76,12 +72,10 @@ export default function EventsPage() {
           </div>
         )}
 
-        {/* Loading */}
         {loading && !error && (
           <p className="text-center text-gray-400 mt-10 text-lg">Loading events...</p>
         )}
 
-        {/* Events Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {!loading && filteredEvents.length > 0
             ? filteredEvents.map((event) => (

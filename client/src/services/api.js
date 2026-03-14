@@ -4,13 +4,16 @@ const BASE_URL = "https://campuspulse-event-management-system.onrender.com";
 export async function getEvents() {
   const res = await fetch(`${BASE_URL}/events`);
   if (!res.ok) throw new Error("Failed to load events");
-  return res.json();
+  const data = await res.json();
+  // ✅ Ensure each event has a type
+  return data.map(ev => ({ ...ev, type: ev.type || "Other" }));
 }
 
 export async function getEvent(id) {
   const res = await fetch(`${BASE_URL}/events/${id}`);
   if (!res.ok) throw new Error("Failed to load event");
-  return res.json();
+  const event = await res.json();
+  return { ...event, type: event.type || "Other" }; // ✅ Default if missing
 }
 
 export async function registerForEvent(eventId, userId) {
@@ -88,5 +91,6 @@ export async function deleteEvent(id) {
 export async function getAllEvents() {
   const res = await fetch(`${BASE_URL}/events`);
   if (!res.ok) throw new Error("Failed to load events");
-  return res.json();
+  const data = await res.json();
+  return data.map(ev => ({ ...ev, type: ev.type || "Other" }));
 }

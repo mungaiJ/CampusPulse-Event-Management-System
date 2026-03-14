@@ -33,6 +33,14 @@ export default function EventDetailsPage() {
         <h2 className="text-4xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500">
           {event.title}
         </h2>
+
+        {/* ✅ Type */}
+        {event.type && (
+          <span className="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full shadow text-sm mb-4">
+            {event.type}
+          </span>
+        )}
+
         <p className="text-gray-300 mb-4">{event.description}</p>
         <p className="text-gray-400 mb-2">📅 {new Date(event.event_date).toLocaleString()}</p>
         {event.location && <p className="text-gray-400 mb-2">📍 Location: {event.location}</p>}
