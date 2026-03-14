@@ -27,50 +27,64 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="relative w-full max-w-md bg-gray-800 rounded-3xl shadow-2xl p-8 overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-950 to-black px-4">
 
-        {/* Glow Effects */}
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-400 rounded-full blur-3xl opacity-30 animate-pulse pointer-events-none"></div>
+      {/* Glow background */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-purple-600 opacity-30 blur-3xl rounded-full"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 opacity-30 blur-3xl rounded-full"></div>
 
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 rounded-full blur-3xl opacity-30 animate-pulse pointer-events-none"></div>
+      <div className="relative w-full max-w-md backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl shadow-2xl p-8">
 
         <h1 className="text-4xl font-bold text-white text-center mb-2">
-          Login
+          Welcome Back
         </h1>
 
-        <p className="text-center text-gray-400 mb-6 text-sm">
-          Access your campus event account
+        <p className="text-center text-gray-400 mb-8 text-sm">
+          Login to your campus event account
         </p>
 
-        <form className="relative z-10" onSubmit={handleSubmit}>
-          <input
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full mb-4 p-3 rounded-xl bg-gray-700 text-white border border-gray-600 focus:border-blue-500 outline-none"
-          />
+        <form onSubmit={handleSubmit} className="space-y-6">
 
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            className="w-full mb-6 p-3 rounded-xl bg-gray-700 text-white border border-gray-600 focus:border-blue-500 outline-none"
-          />
+          {/* Email */}
+          <div className="relative">
+            <input
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+              className="peer w-full p-3 bg-gray-800 text-white rounded-xl border border-gray-600 focus:border-blue-500 outline-none"
+            />
+            <label className="absolute left-3 -top-2.5 bg-gray-900 px-1 text-sm text-gray-400 peer-focus:text-blue-400">
+              Email
+            </label>
+          </div>
 
-          <button className="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-xl hover:scale-105 transition">
+          {/* Password */}
+          <div className="relative">
+            <input
+              name="password"
+              type="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className="peer w-full p-3 bg-gray-800 text-white rounded-xl border border-gray-600 focus:border-blue-500 outline-none"
+            />
+            <label className="absolute left-3 -top-2.5 bg-gray-900 px-1 text-sm text-gray-400 peer-focus:text-blue-400">
+              Password
+            </label>
+          </div>
+
+          <button className="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-xl hover:scale-105 hover:shadow-lg transition">
             Login
           </button>
 
           {message && (
-            <p className="mt-4 text-center text-sm text-red-400">{message}</p>
+            <p className="text-center text-red-400 text-sm">{message}</p>
           )}
         </form>
 
-        <p className="mt-6 text-center text-gray-500 text-sm relative z-10">
+        <p className="mt-6 text-center text-gray-400 text-sm">
           Don't have an account?{" "}
           <Link
             to="/signup"
@@ -79,6 +93,7 @@ export default function LoginPage() {
             Sign Up
           </Link>
         </p>
+
       </div>
     </div>
   );
