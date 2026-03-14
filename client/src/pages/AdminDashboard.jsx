@@ -144,10 +144,12 @@ export default function AdminDashboard() {
             >
               <option value="">Select Event Type</option>
               <option value="Workshop">Workshop</option>
-              <option value="Seminar">Seminar</option>
-              <option value="Conference">Conference</option>
-              <option value="Meetup">Meetup</option>
-              <option value="Other">Other</option>
+              <option value="Seminar">Social</option>
+              <option value="Conference">Sports</option>
+              <option value="Meetup">Academic</option>
+              <option value="Meetup">Cultural</option>
+              <option value="Meetup">Career</option>
+              <option value="Other">...Other</option>
             </select>
           </div>
 
