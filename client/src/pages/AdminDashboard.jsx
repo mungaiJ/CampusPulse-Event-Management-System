@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { getAllEvents, createEvent, updateEvent, deleteEvent } from "../services/api";
+import {
+  getAllEvents,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+} from "../services/api";
 
 export default function AdminDashboard() {
   const [events, setEvents] = useState([]);
@@ -9,7 +14,7 @@ export default function AdminDashboard() {
     event_date: "",
     capacity: "",
     location: "",
-    type: ""
+    type: "",
   });
   const [editingId, setEditingId] = useState(null);
 
@@ -37,7 +42,14 @@ export default function AdminDashboard() {
       await createEvent(payload);
     }
 
-    setForm({ title: "", description: "", event_date: "", capacity: "", location: "", type: "" });
+    setForm({
+      title: "",
+      description: "",
+      event_date: "",
+      capacity: "",
+      location: "",
+      type: "",
+    });
     setEditingId(null);
     loadEvents();
   };
@@ -49,7 +61,7 @@ export default function AdminDashboard() {
       event_date: event.event_date ? event.event_date.slice(0, 16) : "",
       capacity: event.capacity,
       location: event.location,
-      type: event.type || ""
+      type: event.type || "",
     });
     setEditingId(event.id);
   };
@@ -61,7 +73,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-white px-6 py-12 overflow-hidden">
-      
       {/* Subtle background glows */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-purple-600 opacity-20 blur-3xl rounded-full animate-pulse pointer-events-none"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-500 opacity-20 blur-3xl rounded-full animate-pulse pointer-events-none"></div>
@@ -77,7 +88,9 @@ export default function AdminDashboard() {
         </h2>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-200 mb-1">Title</label>
+            <label className="block text-sm font-medium text-gray-200 mb-1">
+              Title
+            </label>
             <input
               name="title"
               placeholder="Event Title"
@@ -88,7 +101,9 @@ export default function AdminDashboard() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-200 mb-1">Description</label>
+            <label className="block text-sm font-medium text-gray-200 mb-1">
+              Description
+            </label>
             <textarea
               name="description"
               placeholder="Event Description"
@@ -101,7 +116,9 @@ export default function AdminDashboard() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-200 mb-1">Date & Time</label>
+              <label className="block text-sm font-medium text-gray-200 mb-1">
+                Date & Time
+              </label>
               <input
                 type="datetime-local"
                 name="event_date"
@@ -111,7 +128,9 @@ export default function AdminDashboard() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-200 mb-1">Capacity</label>
+              <label className="block text-sm font-medium text-gray-200 mb-1">
+                Capacity
+              </label>
               <input
                 type="number"
                 name="capacity"
@@ -124,7 +143,9 @@ export default function AdminDashboard() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-200 mb-1">Location</label>
+            <label className="block text-sm font-medium text-gray-200 mb-1">
+              Location
+            </label>
             <input
               name="location"
               placeholder="Event Location"
@@ -135,7 +156,9 @@ export default function AdminDashboard() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-200 mb-1">Event Type</label>
+            <label className="block text-sm font-medium text-gray-200 mb-1">
+              Event Type
+            </label>
             <select
               name="type"
               value={form.type}
@@ -144,11 +167,12 @@ export default function AdminDashboard() {
             >
               <option value="">Select Event Type</option>
               <option value="Workshop">Workshop</option>
-              <option value="Seminar">Social</option>
-              <option value="Conference">Sports</option>
-              <option value="Meetup">Academic</option>
-              <option value="Meetup">Cultural</option>
-              <option value="Meetup">Career</option>
+              <option value="Seminar">Seminar</option>
+              <option value="Conference">Conference</option>
+              <option value="Social">Social</option>
+              <option value="Academic">Academic</option>
+              <option value="Cultural">Cultural</option>
+              <option value="Career">Career</option>
               <option value="Other">...Other</option>
             </select>
           </div>
@@ -164,7 +188,9 @@ export default function AdminDashboard() {
 
       {/* Events List */}
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl font-semibold mb-6 text-cyan-400">All Events</h2>
+        <h2 className="text-3xl font-semibold mb-6 text-cyan-400">
+          All Events
+        </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map((event) => (
             <div
@@ -173,8 +199,12 @@ export default function AdminDashboard() {
             >
               <h3 className="text-xl font-bold text-blue-400">{event.title}</h3>
               <p className="text-gray-300 mb-1">{event.description}</p>
-              <p className="text-sm text-gray-400">📅 {new Date(event.event_date).toLocaleString()}</p>
-              <p className="text-sm text-gray-400">👥 Capacity: {event.capacity}</p>
+              <p className="text-sm text-gray-400">
+                📅 {new Date(event.event_date).toLocaleString()}
+              </p>
+              <p className="text-sm text-gray-400">
+                👥 Capacity: {event.capacity}
+              </p>
               <p className="text-sm text-gray-400">🏷️ Type: {event.type}</p>
               <div className="flex justify-end space-x-4 mt-4">
                 <button
