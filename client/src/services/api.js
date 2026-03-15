@@ -1,11 +1,32 @@
 const BASE_URL = "https://campuspulse-event-management-system.onrender.com";
 
+// Helper function for API calls with retry logic
+async function fetchWithRetry(url, options = {}, retries = 2) {
+  for (let i = 0; i <= retries; i++) {
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok && response.status >= 500 && i < retries) {
+        // Retry on server errors
+        await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+        continue;
+      }
+      return response;
+    } catch (error) {
+      if (i < retries) {
+        await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+      } else {
+        throw error;
+      }
+    }
+  }
+}
+
 // Events
 export async function getEvents() {
-  const res = await fetch(`${BASE_URL}/events`);
+  const res = await fetchWithRetry(`${BASE_URL}/events`);
   if (!res.ok) throw new Error("Failed to load events");
   const data = await res.json();
-  // ✅ Ensure each event has a type
+  // Ensure each event has a type
   return data.map(ev => ({ ...ev, type: ev.type || "Other" }));
 }
 
@@ -93,4 +114,39 @@ export async function getAllEvents() {
   if (!res.ok) throw new Error("Failed to load events");
   const data = await res.json();
   return data.map(ev => ({ ...ev, type: ev.type || "Other" }));
+}
+
+// Export functions
+export async function exportEventsCsv() {
+  const res = await fetch(`${BASE_URL}/events/export/csv`);
+  if (!res.ok) throw new Error("Failed to export events");
+  const blob = await res.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "events_export.csv";
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+}
+
+export async function exportRegistrationsCsv() {
+  const res = await fetch(`${BASE_URL}/events/export/registrations/csv`);
+  if (!res.ok) throw new Error("Failed to export registrations");
+  const blob = await res.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "registrations_export.csv";
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+}
+
+export async function getEventStats() {
+  const res = await fetch(`${BASE_URL}/events/stats`);
+  if (!res.ok) throw new Error("Failed to load statistics");
+  return res.json();
 }

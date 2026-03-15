@@ -7,29 +7,100 @@ export default function SignupPage() {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
     role: "student",
   });
 
   const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState("error");
+  const [loading, setLoading] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
   const navigate = useNavigate();
 
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+
+    // Calculate password strength
+    if (name === "password") {
+      let strength = 0;
+      if (value.length >= 8) strength += 1;
+      if (/[A-Z]/.test(value)) strength += 1;
+      if (/[a-z]/.test(value)) strength += 1;
+      if (/[0-9]/.test(value)) strength += 1;
+      if (/[^A-Za-z0-9]/.test(value)) strength += 1;
+      setPasswordStrength(strength);
+    }
+  };
+
+  const validateForm = () => {
+    if (form.password.length < 8) {
+      setMessageType("error");
+      setMessage("Password must be at least 8 characters long.");
+      return false;
+    }
+
+    if (form.password !== form.confirmPassword) {
+      setMessageType("error");
+      setMessage("Passwords do not match.");
+      return false;
+    }
+
+    if (!form.name || !form.email) {
+      setMessageType("error");
+      setMessage("Please fill in all required fields.");
+      return false;
+    }
+
+    return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await signupUser(form);
 
-    if (data.user) {
-      localStorage.setItem("user", JSON.stringify(data.user));
-      if (data.token) localStorage.setItem("token", data.token);
-
-      setForm({ name: "", email: "", password: "", role: "student" });
-
-      navigate(data.user.role === "admin" ? "/admin" : "/my-events");
-    } else {
-      setMessage(data.error || data.message || "Signup failed.");
+    if (!validateForm()) {
+      return;
     }
+
+    setLoading(true);
+
+    try {
+      const data = await signupUser({
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        role: form.role,
+      });
+
+      if (data.user || data.message.includes("successful")) {
+        setMessageType("success");
+        setMessage("Account created successfully! Redirecting...");
+
+        localStorage.setItem("user", JSON.stringify(data.user));
+        if (data.token) localStorage.setItem("token", data.token);
+
+        setForm({ name: "", email: "", password: "", confirmPassword: "", role: "student" });
+
+        setTimeout(() => {
+          navigate(data.user.role === "admin" ? "/admin" : "/my-events");
+        }, 1000);
+      } else {
+        setMessageType("error");
+        setMessage(data.error || data.message || "Signup failed. Please try again.");
+      }
+    } catch (err) {
+      setMessageType("error");
+      setMessage("An error occurred. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getPasswordStrengthColor = () => {
+    if (passwordStrength === 0) return "bg-gray-600";
+    if (passwordStrength <= 2) return "bg-red-600";
+    if (passwordStrength <= 3) return "bg-yellow-600";
+    return "bg-green-600";
   };
 
   return (
@@ -49,7 +120,7 @@ export default function SignupPage() {
           Join our campus event platform
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
 
           {/* Name */}
           <div className="relative">
@@ -58,9 +129,11 @@ export default function SignupPage() {
               value={form.name}
               onChange={handleChange}
               required
-              className="peer w-full p-3 bg-gray-800 text-white rounded-xl border border-gray-600 focus:border-blue-500 outline-none"
+              disabled={loading}
+              className="peer w-full p-3 bg-gray-800 text-white rounded-xl border border-gray-600 focus:border-blue-500 outline-none disabled:opacity-50"
+              placeholder=" "
             />
-            <label className="absolute left-3 -top-2.5 bg-gray-900 px-1 text-sm text-gray-400 peer-focus:text-blue-400">
+            <label className="absolute left-3 -top-2.5 bg-gray-900 px-1 text-sm text-gray-400 peer-focus:text-blue-400 peer-placeholder-shown:text-gray-400">
               Full Name
             </label>
           </div>
@@ -73,10 +146,12 @@ export default function SignupPage() {
               value={form.email}
               onChange={handleChange}
               required
-              className="peer w-full p-3 bg-gray-800 text-white rounded-xl border border-gray-600 focus:border-blue-500 outline-none"
+              disabled={loading}
+              className="peer w-full p-3 bg-gray-800 text-white rounded-xl border border-gray-600 focus:border-blue-500 outline-none disabled:opacity-50"
+              placeholder=" "
             />
-            <label className="absolute left-3 -top-2.5 bg-gray-900 px-1 text-sm text-gray-400 peer-focus:text-blue-400">
-              Email
+            <label className="absolute left-3 -top-2.5 bg-gray-900 px-1 text-sm text-gray-400 peer-focus:text-blue-400 peer-placeholder-shown:text-gray-400">
+              Email Address
             </label>
           </div>
 
@@ -88,10 +163,49 @@ export default function SignupPage() {
               value={form.password}
               onChange={handleChange}
               required
-              className="peer w-full p-3 bg-gray-800 text-white rounded-xl border border-gray-600 focus:border-blue-500 outline-none"
+              disabled={loading}
+              className="peer w-full p-3 bg-gray-800 text-white rounded-xl border border-gray-600 focus:border-blue-500 outline-none disabled:opacity-50"
+              placeholder=" "
             />
-            <label className="absolute left-3 -top-2.5 bg-gray-900 px-1 text-sm text-gray-400 peer-focus:text-blue-400">
+            <label className="absolute left-3 -top-2.5 bg-gray-900 px-1 text-sm text-gray-400 peer-focus:text-blue-400 peer-placeholder-shown:text-gray-400">
               Password
+            </label>
+            
+            {form.password && (
+              <div className="mt-2">
+                <div className="flex gap-1 mb-1">
+                  {[...Array(5)].map((_, i) => (
+                    <div
+                      key={i}
+                      className={`h-2 rounded-full flex-1 ${
+                        i < passwordStrength ? getPasswordStrengthColor() : "bg-gray-700"
+                      }`}
+                    ></div>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-400">
+                  {passwordStrength <= 2 && "Weak"}
+                  {passwordStrength === 3 && "Fair"}
+                  {passwordStrength >= 4 && "Strong"}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Confirm Password */}
+          <div className="relative">
+            <input
+              name="confirmPassword"
+              type="password"
+              value={form.confirmPassword}
+              onChange={handleChange}
+              required
+              disabled={loading}
+              className="peer w-full p-3 bg-gray-800 text-white rounded-xl border border-gray-600 focus:border-blue-500 outline-none disabled:opacity-50"
+              placeholder=" "
+            />
+            <label className="absolute left-3 -top-2.5 bg-gray-900 px-1 text-sm text-gray-400 peer-focus:text-blue-400 peer-placeholder-shown:text-gray-400">
+              Confirm Password
             </label>
           </div>
 
@@ -100,19 +214,26 @@ export default function SignupPage() {
             name="role"
             value={form.role}
             onChange={handleChange}
-            className="w-full p-3 rounded-xl bg-gray-800 text-white border border-gray-600 focus:border-blue-500 outline-none"
+            disabled={loading}
+            className="w-full p-3 rounded-xl bg-gray-800 text-white border border-gray-600 focus:border-blue-500 outline-none disabled:opacity-50"
           >
             <option value="student">Student</option>
             <option value="lecturer">Lecturer</option>
             <option value="staff">Staff</option>
           </select>
 
-          <button className="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-xl hover:scale-105 hover:shadow-lg transition">
-            Create Account
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-xl hover:scale-105 hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "Creating Account..." : "Create Account"}
           </button>
 
           {message && (
-            <p className="text-center text-red-400 text-sm">{message}</p>
+            <p className={`text-center text-sm font-medium ${messageType === "success" ? "text-green-400" : "text-red-400"}`}>
+              {message}
+            </p>
           )}
         </form>
 
