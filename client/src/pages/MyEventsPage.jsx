@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { getCurrentUser } from "../services/auth";
 import { getMyEvents, unregisterFromEvent } from "../services/api";
 
-const BASE_URL = "https://campuspulse-event-management-system.onrender.com";
-
 export default function MyEventsPage() {
   const user = getCurrentUser();
   const [events, setEvents] = useState([]);
@@ -28,7 +26,7 @@ export default function MyEventsPage() {
     if (window.confirm("Are you sure you want to unregister from this event?")) {
       try {
         await unregisterFromEvent(eventId, user.id);
-        loadEvents(); // refresh after unregister
+        loadEvents();
       } catch {
         setError("Failed to unregister from event");
       }
@@ -36,12 +34,10 @@ export default function MyEventsPage() {
   };
 
   const handleExportCalendar = () => {
-    // Generate ICS file for calendar export
     const icsContent = events
       .map((event) => {
         const startDate = new Date(event.event_date);
-        const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000); // 2 hours duration
-
+        const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000);
         const formatDate = (d) => d.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 
         return `BEGIN:VEVENT
@@ -87,18 +83,14 @@ END:VCALENDAR`;
   const now = new Date();
   const upcomingEvents = events.filter((e) => new Date(e.event_date) >= now);
   const pastEvents = events.filter((e) => new Date(e.event_date) < now);
-
-  const displayEvents =
-    activeTab === "upcoming" ? upcomingEvents : pastEvents;
+  const displayEvents = activeTab === "upcoming" ? upcomingEvents : pastEvents;
 
   return (
     <div className="relative min-h-screen bg-gray-900 text-white px-8 py-12 overflow-hidden">
-      {/* Gradient Glows */}
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-400 rounded-full blur-3xl opacity-30 animate-pulse z-0"></div>
       <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 rounded-full blur-3xl opacity-30 animate-pulse z-0"></div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
-        {/* Header */}
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-2">
             <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-500 text-transparent bg-clip-text">
@@ -110,7 +102,6 @@ END:VCALENDAR`;
           </p>
         </div>
 
-        {/* Stats */}
         <div className="grid md:grid-cols-3 gap-4 mb-8">
           <div className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl p-6 border border-cyan-400">
             <p className="text-gray-300 text-sm">Total Registered</p>
@@ -126,7 +117,6 @@ END:VCALENDAR`;
           </div>
         </div>
 
-        {/* Navigation Tabs and Export */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div className="flex gap-4">
             <button
@@ -150,7 +140,6 @@ END:VCALENDAR`;
               Past Events
             </button>
           </div>
-
           {events.length > 0 && (
             <button
               onClick={handleExportCalendar}
@@ -161,21 +150,18 @@ END:VCALENDAR`;
           )}
         </div>
 
-        {/* Error Message */}
         {error && (
           <div className="mb-6 p-4 bg-red-900 bg-opacity-50 border border-red-500 rounded-lg text-red-200">
             {error}
           </div>
         )}
 
-        {/* Loading State */}
         {loading && (
           <p className="text-center text-gray-400 mt-10">
             Loading your events...
           </p>
         )}
 
-        {/* Empty State */}
         {!loading && displayEvents.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-400 text-lg mb-4">
@@ -192,7 +178,6 @@ END:VCALENDAR`;
           </div>
         )}
 
-        {/* Events Grid */}
         {!loading && displayEvents.length > 0 && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {displayEvents.map((event) => (
@@ -200,7 +185,6 @@ END:VCALENDAR`;
                 key={event.id}
                 className="bg-gray-800 bg-opacity-70 backdrop-blur-md text-white rounded-2xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 p-6 border border-gray-700"
               >
-                {/* Event Status Badge */}
                 <div className="flex justify-between items-start mb-3">
                   <h3 className="text-lg font-bold text-blue-400 flex-1">
                     {event.title}
@@ -219,23 +203,13 @@ END:VCALENDAR`;
                 </p>
 
                 <div className="space-y-2 text-sm text-gray-400 mb-4">
-                  <p>
-                    📅 {new Date(event.event_date).toLocaleDateString()}
-                  </p>
-                  <p>
-                    🕐 {new Date(event.event_date).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
+                  <p>📅 {new Date(event.event_date).toLocaleDateString()}</p>
+                  <p>🕐 {new Date(event.event_date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
                   <p>📍 {event.location}</p>
                   <p>🏷️ {event.type}</p>
-                  <p>
-                    👥 {event.registrations_count || 0}/{event.capacity}
-                  </p>
+                  <p>👥 {event.registrations_count || 0}/{event.capacity}</p>
                 </div>
 
-                {/* Unregister Button - Only for upcoming events */}
                 {new Date(event.event_date) >= now && (
                   <button
                     onClick={() => handleUnregister(event.id)}
