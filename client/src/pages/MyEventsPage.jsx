@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { getCurrentUser } from "../services/auth";
 import { getMyEvents, unregisterFromEvent } from "../services/api";
 
+const BASE_URL = "https://campuspulse-event-management-system.onrender.com";
+
 export default function MyEventsPage() {
   const user = getCurrentUser();
   const [events, setEvents] = useState([]);
@@ -73,9 +75,7 @@ END:VCALENDAR`;
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
-        <p className="text-gray-400 text-lg text-center">
-          Please log in to view your events.
-        </p>
+        <p className="text-gray-400 text-lg text-center">Please log in to view your events.</p>
       </div>
     );
   }
@@ -83,6 +83,7 @@ END:VCALENDAR`;
   const now = new Date();
   const upcomingEvents = events.filter((e) => new Date(e.event_date) >= now);
   const pastEvents = events.filter((e) => new Date(e.event_date) < now);
+
   const displayEvents = activeTab === "upcoming" ? upcomingEvents : pastEvents;
 
   return (
@@ -97,9 +98,7 @@ END:VCALENDAR`;
               My Events Dashboard
             </span>
           </h1>
-          <p className="text-gray-300 text-lg">
-            Welcome, {user.name} ({user.role})
-          </p>
+          <p className="text-gray-300 text-lg">Welcome, {user.name} ({user.role})</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-4 mb-8">
@@ -140,6 +139,7 @@ END:VCALENDAR`;
               Past Events
             </button>
           </div>
+
           {events.length > 0 && (
             <button
               onClick={handleExportCalendar}
@@ -156,11 +156,7 @@ END:VCALENDAR`;
           </div>
         )}
 
-        {loading && (
-          <p className="text-center text-gray-400 mt-10">
-            Loading your events...
-          </p>
-        )}
+        {loading && <p className="text-center text-gray-400 mt-10">Loading your events...</p>}
 
         {!loading && displayEvents.length === 0 && (
           <div className="text-center py-12">
@@ -186,25 +182,29 @@ END:VCALENDAR`;
                 className="bg-gray-800 bg-opacity-70 backdrop-blur-md text-white rounded-2xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 p-6 border border-gray-700"
               >
                 <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-lg font-bold text-blue-400 flex-1">
-                    {event.title}
-                  </h3>
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${
-                    new Date(event.event_date) >= now
-                      ? "bg-green-900 text-green-200"
-                      : "bg-gray-700 text-gray-300"
-                  }`}>
+                  <h3 className="text-lg font-bold text-blue-400 flex-1">{event.title}</h3>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${
+                      new Date(event.event_date) >= now
+                        ? "bg-green-900 text-green-200"
+                        : "bg-gray-700 text-gray-300"
+                    }`}
+                  >
                     {new Date(event.event_date) >= now ? "Upcoming" : "Attended"}
                   </span>
                 </div>
 
-                <p className="text-gray-300 text-sm mb-4 line-clamp-2">
-                  {event.description}
-                </p>
+                <p className="text-gray-300 text-sm mb-4 line-clamp-2">{event.description}</p>
 
                 <div className="space-y-2 text-sm text-gray-400 mb-4">
                   <p>📅 {new Date(event.event_date).toLocaleDateString()}</p>
-                  <p>🕐 {new Date(event.event_date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
+                  <p>
+                    🕐{" "}
+                    {new Date(event.event_date).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
                   <p>📍 {event.location}</p>
                   <p>🏷️ {event.type}</p>
                   <p>👥 {event.registrations_count || 0}/{event.capacity}</p>
