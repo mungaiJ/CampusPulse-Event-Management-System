@@ -8,13 +8,13 @@ export default function EventCard({ event, className = "" }) {
                   hover:shadow-2xl hover:-translate-y-1 hover:scale-105 transition transform duration-300 ${className}`}
     >
       {/* Event Title */}
-      <h3 className="text-xl md:text-2xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">
+      <h3 className="text-xl md:text-2xl font-bold mb-3 bg-clip-text text-transparent bg-linear-to-r from-blue-400 to-indigo-500">
         {event.title}
       </h3>
 
       {/* Event Type Badge */}
       {event.type && (
-        <span className="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full shadow text-xs mb-3 animate-pulse">
+        <span className="inline-block bg-linear-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full shadow text-xs mb-3 animate-pulse">
           {event.type}
         </span>
       )}
@@ -34,13 +34,13 @@ export default function EventCard({ event, className = "" }) {
 
       {/* Stats / Badges */}
       <div className="flex flex-wrap gap-2 text-xs mb-4">
-        <span className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-3 py-1 rounded-full shadow animate-pulse">
+        <span className="bg-linear-to-r from-blue-500 to-indigo-500 text-white px-3 py-1 rounded-full shadow animate-pulse">
           Capacity: {event.capacity}
         </span>
-        <span className="bg-gradient-to-r from-green-400 to-green-600 text-white px-3 py-1 rounded-full shadow animate-pulse">
+        <span className="bg-linear-to-r from-green-400 to-green-600 text-white px-3 py-1 rounded-full shadow animate-pulse">
           Registered: {event.registrations_count}
         </span>
-        <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full shadow animate-pulse">
+        <span className="bg-linear-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full shadow animate-pulse">
           Remaining: {event.remaining_capacity}
         </span>
       </div>

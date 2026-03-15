@@ -28,15 +28,15 @@ export default function EventDetailsPage() {
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 px-6 py-12 flex justify-center">
+    <div className="min-h-screen bg-linear-to-br from-gray-900 via-indigo-900 to-purple-900 px-6 py-12 flex justify-center">
       <div className="bg-gray-800 bg-opacity-70 backdrop-blur-md shadow-2xl rounded-xl p-8 max-w-3xl border border-cyan-400">
-        <h2 className="text-4xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500">
+        <h2 className="text-4xl font-bold mb-6 text-transparent bg-clip-text bg-linear-to-r from-cyan-400 via-blue-500 to-indigo-500">
           {event.title}
         </h2>
 
         {/* ✅ Type */}
         {event.type && (
-          <span className="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full shadow text-sm mb-4">
+          <span className="inline-block bg-linear-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full shadow text-sm mb-4">
             {event.type}
           </span>
         )}

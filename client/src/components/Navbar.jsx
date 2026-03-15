@@ -11,22 +11,22 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-lg bg-gray-900/80 border-b border-white/10 shadow-lg">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <nav className="sticky top-0 z-50 bg-gray-800 shadow-md">
+      <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
 
         {/* Logo */}
         <Link to="/">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-300 to-indigo-400 bg-clip-text text-transparent cursor-pointer drop-shadow-lg hover:scale-105 transition-transform">
+          <h1 className="text-3xl font-extrabold text-white tracking-tight cursor-pointer hover:text-blue-400 transition-colors">
             CampusPulse
           </h1>
         </Link>
 
         {/* Navigation Links */}
-        <div className="flex items-center gap-6 text-gray-300">
+        <div className="flex items-center gap-5">
 
           <Link
             to="/"
-            className="font-medium hover:text-blue-400 transition"
+            className="text-gray-300 hover:text-blue-400 font-medium transition-colors"
           >
             Events
           </Link>
@@ -34,7 +34,7 @@ export default function Navbar() {
           {user && (
             <Link
               to="/my-events"
-              className="font-medium hover:text-blue-400 transition"
+              className="text-gray-300 hover:text-blue-400 font-medium transition-colors"
             >
               My Events
             </Link>
@@ -43,7 +43,7 @@ export default function Navbar() {
           {user?.role === "admin" && (
             <Link
               to="/admin"
-              className="font-medium hover:text-purple-400 transition"
+              className="text-gray-300 hover:text-purple-400 font-medium transition-colors"
             >
               Admin
             </Link>
@@ -53,14 +53,14 @@ export default function Navbar() {
             <>
               <Link
                 to="/signup"
-                className="font-medium hover:text-green-400 transition"
+                className="text-gray-300 hover:text-green-400 font-medium transition-colors"
               >
                 Signup
               </Link>
 
               <Link
                 to="/login"
-                className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold hover:scale-105 transition"
+                className="px-5 py-2 rounded-full bg-linear-to-r from-blue-500 to-indigo-600 text-white font-semibold shadow hover:scale-105 hover:shadow-lg transition-transform transition-shadow"
               >
                 Login
               </Link>
@@ -70,7 +70,7 @@ export default function Navbar() {
           {user && (
             <button
               onClick={handleLogout}
-              className="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-semibold hover:scale-105 transition"
+              className="px-5 py-2 rounded-full bg-red-500 text-white font-semibold shadow hover:bg-red-600 hover:scale-105 hover:shadow-lg transition-all"
             >
               Logout
             </button>

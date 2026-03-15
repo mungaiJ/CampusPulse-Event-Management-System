@@ -72,12 +72,12 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-white px-6 py-12 overflow-hidden">
+    <div className="relative min-h-screen bg-linear-to-br from-gray-900 via-indigo-900 to-purple-900 text-white px-6 py-12 overflow-hidden">
       {/* Subtle background glows */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-purple-600 opacity-20 blur-3xl rounded-full animate-pulse pointer-events-none"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-500 opacity-20 blur-3xl rounded-full animate-pulse pointer-events-none"></div>
 
-      <h1 className="text-4xl font-bold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500">
+      <h1 className="text-4xl font-bold text-center mb-12 text-transparent bg-clip-text bg-linear-to-r from-cyan-400 via-blue-500 to-indigo-500">
         Admin Dashboard
       </h1>
 
@@ -179,7 +179,7 @@ export default function AdminDashboard() {
 
           <button
             type="submit"
-            className="w-full py-3 rounded-lg font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-blue-500 hover:to-cyan-400 transition transform hover:scale-105 shadow-lg"
+            className="w-full py-3 rounded-lg font-semibold bg-linear-to-r from-cyan-400 to-blue-500 hover:from-blue-500 hover:to-cyan-400 transition transform hover:scale-105 shadow-lg"
           >
             {editingId ? "Update Event" : "Create Event"}
           </button>

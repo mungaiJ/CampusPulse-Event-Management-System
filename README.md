@@ -47,7 +47,7 @@ Frontend:
 https://univibez.netlify.app/
 
 Backend API:
-https://your-render-backend.onrender.com
+https://campuspulse-event-management-system.onrender.com
 
 # System Architecture
 
@@ -132,7 +132,7 @@ CampusPulse-Event-Management-System
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/CampusPulse-Event-Management-System.git
+git clone https://github.com/mungaiJ/CampusPulse-Event-Management-System.git
 cd CampusPulse-Event-Management-System
 ```
 
@@ -194,7 +194,7 @@ python app.py
 The API will run on:
 
 ```
-http://127.0.0.1:5000
+http://127.0.0.1:5555
 ```
 
 ---
@@ -210,13 +210,13 @@ cd client
 Install dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 Run the development server:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 The frontend will run on:
@@ -254,8 +254,15 @@ POST /login
 Request Body
 
 {
-  "email": "john@example.com",
-  "password": "password123"
+    "message": "Login successful",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3MzYwMTkxNywianRpIjoiMDhhOTYyNmUtNDMyYy00N2FjLTliNWItN2E0NWEzMThhYmY2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzczNjAxOTE3LCJjc3JmIjoiOWU2OGRhMzktNmJlNi00NWIyLTg5NDAtNWMyOTc3Nzc1MjU4IiwiZXhwIjoxNzczNjAyODE3fQ.BVL1wEjAn1Y_6neTn7X5ENvH7oT5FjI8SARbFWZLC3k",
+    "user": {
+        "created_at": "Sat, 14 Mar 2026 00:58:28 GMT",
+        "email": "test@example.com",
+        "id": 1,
+        "name": "Test User",
+        "role": "admin"
+    }
 }
 
 ```
@@ -267,18 +274,23 @@ Request Body
 ### Get All Events
 
 ```
-GET /events
+GET /events/id
 
 Response
 
-[
-  {
-    "id": 1,
-    "title": "Tech Meetup",
-    "description": "Campus developer meetup",
-    "date": "2026-05-20"
-  }
-]
+{
+    "capacity": 50,
+    "created_at": "2026-03-14T11:27:38.729250",
+    "created_by": 2,
+    "description": "This hands-on workshop is designed for students who are new to programming. Participants will learn the fundamentals of Python, including basic syntax, data types, and simple projects. No prior experience is required, and attendees will have the chance to ask questions and practice coding in real time.",
+    "event_date": "2026-03-25T10:00:00",
+    "id": 2,
+    "location": "Computer Lab A, Main Campus",
+    "registrations_count": 1,
+    "remaining_capacity": 49,
+    "title": "Coding for Beginners Workshop",
+    "type": "Workshop"
+}
 ```
 
 ### Register for an Event

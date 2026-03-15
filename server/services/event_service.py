@@ -18,7 +18,7 @@ def create_event(data, creator_id):
             location=data["location"],
             event_date=event_date,
             capacity=int(data["capacity"]),
-            type=data.get("type", "Other"),  # ✅ Handle event type, default to 'Other'
+            type=data.get("type", "Other"), 
             created_by=creator_id
         )
         db.session.add(event)
@@ -44,7 +44,7 @@ def update_event(event_id, data):
     if not event:
         return {"error": "Event not found"}
     try:
-        # Update event details, including 'type'
+        # Update event details
         event.title = data.get("title", event.title)
         event.description = data.get("description", event.description)
         event.location = data.get("location", event.location)

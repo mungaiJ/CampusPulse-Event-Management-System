@@ -24,7 +24,7 @@ export default function MyEventsPage() {
   const handleUnregister = async (eventId) => {
     try {
       await unregisterFromEvent(eventId, user.id);
-      loadEvents(); // refresh after unregister
+      loadEvents();
     } catch {
       setError("Failed to unregister from event");
     }
@@ -42,12 +42,11 @@ export default function MyEventsPage() {
 
   return (
     <div className="relative min-h-screen bg-gray-900 text-white px-8 py-12 overflow-hidden">
-      {/* Gradient Glows */}
-      <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-400 rounded-full blur-3xl opacity-30 animate-pulse z-0"></div>
-      <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 rounded-full blur-3xl opacity-30 animate-pulse z-0"></div>
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-linear-to-r from-purple-500 via-pink-500 to-indigo-400 rounded-full blur-3xl opacity-30 animate-pulse z-0"></div>
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-linear-to-r from-cyan-400 via-blue-500 to-indigo-600 rounded-full blur-3xl opacity-30 animate-pulse z-0"></div>
 
       <h2 className="text-4xl md:text-5xl font-bold mb-8 text-center relative z-10">
-        <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-500 text-transparent bg-clip-text">
+        <span className="bg-linear-to-r from-blue-400 via-purple-400 to-indigo-500 text-transparent bg-clip-text">
           My Registered Events
         </span>
       </h2>
@@ -72,20 +71,20 @@ export default function MyEventsPage() {
             key={event.id}
             className="bg-gray-800 text-white rounded-2xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 p-6"
           >
-            {/* Event details */}
             <h3 className="text-xl font-bold text-blue-400">{event.title}</h3>
             <p className="text-gray-300 mb-2">{event.description}</p>
             <p className="text-sm text-gray-400">
               📅 {new Date(event.event_date).toLocaleString()}
             </p>
-            <p className="text-sm text-gray-400">👥 Capacity: {event.capacity}</p>
+            <p className="text-sm text-gray-400">
+              👥 Capacity: {event.capacity}
+            </p>
 
-            {/* Styled Unregister Button */}
             <button
               onClick={() => handleUnregister(event.id)}
               className="
                 mt-4 w-full py-2
-                bg-gradient-to-r from-red-500 to-red-700
+                bg-linear-to-r from-red-500 to-red-700
                 hover:from-red-600 hover:to-red-800
                 text-white font-bold
                 rounded-xl

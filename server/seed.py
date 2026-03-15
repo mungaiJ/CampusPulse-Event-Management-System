@@ -8,17 +8,17 @@ fake = Faker()
 
 def seed_data():
     with app.app_context():
-        # Optional: clear existing data
+        # clear existing data
         db.drop_all()
         db.create_all()
 
         # Create sample users
         users = []
-        for i in range(3):  # 3 users
+        for i in range(3):
             user = User(
                 name=fake.name(),
                 email=fake.unique.email(),
-                password_hash="hashedpw",  # placeholder
+                password_hash="hashedpw",
                 role=random.choice(["student", "admin"])
             )
             users.append(user)
@@ -26,7 +26,6 @@ def seed_data():
 
         db.session.commit()
 
-        # Create 5 events
         events = []
         for i in range(5):
             creator = random.choice(users)

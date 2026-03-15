@@ -18,14 +18,13 @@ from flask_jwt_extended import JWTManager
 from config import Config
 from db import db
 
-# Import models so migrations can detect them
+
 from models import User, Event, Registration
 
 # Import route blueprints
 from routes.auth_routes import auth_bp
 from routes.event_routes import event_bp
-from routes.user_routes import user_bp   # ✅ new user routes
-
+from routes.user_routes import user_bp 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
@@ -41,7 +40,7 @@ def create_app():
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(event_bp, url_prefix="/events")
-    app.register_blueprint(user_bp, url_prefix="/users")  # ✅ register user routes
+    app.register_blueprint(user_bp, url_prefix="/users") 
 
     @app.route("/")
     def home():

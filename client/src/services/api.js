@@ -5,15 +5,15 @@ export async function getEvents() {
   const res = await fetch(`${BASE_URL}/events`);
   if (!res.ok) throw new Error("Failed to load events");
   const data = await res.json();
-  // ✅ Ensure each event has a type
-  return data.map(ev => ({ ...ev, type: ev.type || "Other" }));
+
+  return data.map((ev) => ({ ...ev, type: ev.type || "Other" }));
 }
 
 export async function getEvent(id) {
   const res = await fetch(`${BASE_URL}/events/${id}`);
   if (!res.ok) throw new Error("Failed to load event");
   const event = await res.json();
-  return { ...event, type: event.type || "Other" }; // ✅ Default if missing
+  return { ...event, type: event.type || "Other" };
 }
 
 export async function registerForEvent(eventId, userId) {
@@ -92,5 +92,5 @@ export async function getAllEvents() {
   const res = await fetch(`${BASE_URL}/events`);
   if (!res.ok) throw new Error("Failed to load events");
   const data = await res.json();
-  return data.map(ev => ({ ...ev, type: ev.type || "Other" }));
+  return data.map((ev) => ({ ...ev, type: ev.type || "Other" }));
 }

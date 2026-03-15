@@ -33,14 +33,11 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-950 to-black px-4">
-
-      {/* Glow background */}
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-900 via-gray-950 to-black px-4">
       <div className="absolute top-0 left-0 w-96 h-96 bg-purple-600 opacity-30 blur-3xl rounded-full"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 opacity-30 blur-3xl rounded-full"></div>
 
       <div className="relative w-full max-w-md backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl shadow-2xl p-8">
-
         <h1 className="text-4xl font-bold text-white text-center mb-2">
           Create Account
         </h1>
@@ -50,8 +47,6 @@ export default function SignupPage() {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-
-          {/* Name */}
           <div className="relative">
             <input
               name="name"
@@ -65,7 +60,6 @@ export default function SignupPage() {
             </label>
           </div>
 
-          {/* Email */}
           <div className="relative">
             <input
               name="email"
@@ -80,7 +74,6 @@ export default function SignupPage() {
             </label>
           </div>
 
-          {/* Password */}
           <div className="relative">
             <input
               name="password"
@@ -95,7 +88,6 @@ export default function SignupPage() {
             </label>
           </div>
 
-          {/* Role */}
           <select
             name="role"
             value={form.role}
@@ -107,7 +99,7 @@ export default function SignupPage() {
             <option value="staff">Staff</option>
           </select>
 
-          <button className="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-xl hover:scale-105 hover:shadow-lg transition">
+          <button className="w-full py-3 bg-linear-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-xl hover:scale-105 hover:shadow-lg transition">
             Create Account
           </button>
 
@@ -125,7 +117,6 @@ export default function SignupPage() {
             Login
           </Link>
         </p>
-
       </div>
     </div>
   );

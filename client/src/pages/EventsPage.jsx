@@ -42,7 +42,7 @@ export default function EventsPage() {
 
       <section className="py-16 max-w-7xl mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">
+          <h2 className="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-linear-to-r from-blue-400 to-indigo-500">
             Upcoming Events
           </h2>
           <p className="text-gray-300 mt-2 text-lg">
@@ -65,7 +65,7 @@ export default function EventsPage() {
             <p className="text-red-500 font-medium">{error}</p>
             <button
               onClick={loadEvents}
-              className="mt-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 hover:shadow-lg transition transform"
+              className="mt-3 bg-linear-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 hover:shadow-lg transition transform"
             >
               Try Again
             </button>
