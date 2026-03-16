@@ -1,4 +1,4 @@
-# CampusPulse – Event Management System
+# CampusPulse - Event Management System
 
 A full-stack campus event management platform that allows students to discover, register, and manage university events in one place.
 
